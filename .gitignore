@@ -42,3 +42,16 @@ terraform.rc
 # Optional: ignore plan files saved before destroying Terraform configuration
 # Uncomment the line below if you want to ignore planout files.
 # planout
+# Partial backend config (contains account-specific bucket names)
+backend.hcl
+
+# Python / build artifacts
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+build/
+*.zip
+
+# Saved Terraform plans
+tfplan
