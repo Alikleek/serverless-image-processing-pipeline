@@ -101,42 +101,6 @@ Thumbnail, Web and Metadata run in parallel, and all three use the Pillow Lambda
 └── Makefile                     # local checks and guarded deploy targets
 ```
 
----
-
-## Getting started
-
-### Prerequisites
-- Terraform ≥ 1.10
-- Python 3.13 (to match the Lambda runtime)
-- AWS CLI v2, only on the machine that deploys
-
-### Local checks (no AWS credentials needed)
-
-```bash
-make validate   # terraform fmt -check + validate, no backend
-make layer      # builds build/pillow-layer.zip
-```
-
-### Deploying to a target account
-
-The code doesn't contain any account ID or Region. You set both at deploy time, and every deploy command first checks that your credentials belong to the account you named.
-
-```bash
-export AWS_PROFILE=<target-profile>
-export EXPECTED_ACCOUNT_ID=<12-digit-account-id>
-
-make bootstrap AWS_REGION=<project-region>          # one-time: state bucket
-cp infra/envs/dev/backend.hcl.example     infra/envs/dev/backend.hcl
-cp infra/envs/dev/dev.auto.tfvars.example infra/envs/dev/dev.auto.tfvars
-# fill both files in, then:
-make plan
-make apply
-```
-
-After the first apply, confirm the SNS subscription from the email AWS sends you. Use `make destroy` to tear down the dev environment.
-
----
-
 ## Cost notes
 
-When idle, the stack costs close to nothing. Lambda, SQS, SNS, Step Functions and DynamoDB on-demand are billed per use. A Standard workflow costs about $0.025 per 1,000 state transitions, and one image takes about 10. The main ongoing costs are S3 storage, CloudWatch Logs and CloudFront data transfer. Set up a budget alert before you deploy.
+Since this is a serverless application, the stack costs close to nothing while at idle. Lambda, SQS, SNS, Step Functions and DynamoDB on-demand are billed per use. A Standard workflow costs about $0.025 per 1,000 state transitions, and one image takes about 10. The main ongoing costs are S3 storage, CloudWatch Logs and CloudFront data transfer.
