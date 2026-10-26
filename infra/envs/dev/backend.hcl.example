@@ -1,0 +1,4 @@
+# Copy to backend.hcl (gitignored) and fill in from the bootstrap output.
+bucket = "image-pipeline-tfstate-<account-id>-<project-region>"
+key    = "envs/dev/terraform.tfstate"
+region = "<project-region>"
